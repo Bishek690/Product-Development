@@ -8,7 +8,6 @@ const upcomingEvents = [
     id: 1,
     title: "AI Innovations Conference 2024",
     date: "January 15, 2024",
-    time: "10:00 AM - 4:00 PM",
     location: "Kathmandu, Nepal",
     description:
       "A global event focusing on the latest advancements in artificial intelligence and machine learning.",
@@ -17,7 +16,6 @@ const upcomingEvents = [
     id: 2,
     title: "Tech Leaders Summit",
     date: "January 20, 2024",
-    time: "9:00 AM - 11:00 AM",
     location: "Virtual Event",
     description:
       "Join industry leaders to discuss the future of technology and innovation.",
@@ -26,7 +24,6 @@ const upcomingEvents = [
     id: 3,
     title: "Startup Growth Hackathon",
     date: "February 10, 2024",
-    time: "9:00 AM - 3:00 PM",
     location: "Tech Park, Kathmandu",
     description:
       "An intensive hackathon event for startups to showcase their ideas and win funding opportunities.",
@@ -35,7 +32,6 @@ const upcomingEvents = [
     id: 4,
     title: "Future of FinTech Summit",
     date: "February 18, 2024",
-    time: "12:00 PM - 5:00 PM",
     location: "Pokhara, Nepal",
     description:
       "An event to explore innovations in financial technology and discuss strategies for future growth.",
@@ -89,12 +85,18 @@ const EventsPage = () => {
                   {event.title}
                 </h3>
                 <p className="text-sm text-gray-600 mb-1">
-                  📅 {event.date} | 🕒 {event.time}
+                  📅 {event.date}
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
                   📍 {event.location}
                 </p>
-                <p className="text-gray-700">{event.description}</p>
+                <p className="text-gray-700 mb-4">{event.description}</p>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  onClick={() => navigate("/event-gallery/${event.id}")}
+                >
+                  View Events Photo
+                </button>                
               </motion.div>
             ))}
           </div>
