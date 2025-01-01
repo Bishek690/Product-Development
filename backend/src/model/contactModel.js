@@ -5,7 +5,7 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Name is required'],
     trim: true,
-    minlength: [2, 'Name must be at least 2 characters long'],
+    minlength: [4, 'Name must be at least 4 characters long'],
   },
   email: {
     type: String,
@@ -22,7 +22,7 @@ const contactSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    // required: [true, 'Phone number is required'],
+    required: [true, 'Phone number is required'],
     // validate: {
     //   validator: function (phone) {
     //     // Regex for validating phone number
@@ -47,9 +47,9 @@ const contactSchema = new mongoose.Schema({
   },
   jobDetails: {
     type: String,
-    // required: [true, 'Job details are required'],
+    required: [true, 'Job details are required'],
     trim: true,
-    // minlength: [10, 'Job details must be at least 10 characters long'],
+    minlength: [10, 'Job details must be at least 10 characters long'],
   },
   submittedDate: {
     type: Date,

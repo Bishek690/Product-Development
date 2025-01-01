@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors'); 
 const path = require('path');
@@ -10,6 +9,7 @@ const adminRoutes = require ("./routes/adminRoutes")
 const contactRoute = require("./routes/contactRoutes")
 const reviewRoute = require("./routes/reviewRoute");
 const blogRoute = require ("./routes/blogRoutes")
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5500;
@@ -34,9 +34,10 @@ DBConnection();
 
 // Routing
 app.use("/api/admin", adminRoutes)
-app.use("/api/inquiry", contactRoute)
+app.use("/api/contact", contactRoute)
 app.use("/api/review", reviewRoute)
 app.use("/api/blog", blogRoute)
+app.use("/api/dashboard", dashboardRoutes)
 
 
 

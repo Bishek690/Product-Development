@@ -10,6 +10,7 @@ import EventGallery from "../Events/EventGallery";
 import BlogsPage from "../Blogs/Blogs";
 import PastSolutions from "../PastSolutions/PastSolutions";
 import Testimonial from "../Testimonial/Testimonial";
+import Feedback from "../Feedback/Feedback";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes = () => {
       <Route path="/blogs" element={<BlogsPage />} />
       <Route path="/past-solutions" element={<PastSolutions />} />
       <Route path="/testimonial" element={<Testimonial />} />
+      <Route path="/feedback" element={<Feedback />} />
     </Routes>
   );
 };

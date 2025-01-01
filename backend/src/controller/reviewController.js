@@ -1,39 +1,22 @@
-const removeFile = require("../middleware/removeImage");
 const ReviewModel = require("../model/reviewModel");
-const getImageUrl = require("../utils/getImageUrl");
 
-
-
-
-
+// Create a new review
 const createReview = async (req, res) => {
   try {
-    const { name, description, company, position, ratings } = req.body;
+    const { name, position, company, ratings, description } = req.body;
 
-    // Ensure a file is uploaded
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+    // Validate the required fields
+    if (!name || !position || !company || !ratings || !description) {
+      return res.status(400).json({ message: "All fields are required" });
     }
-
-    // Validate file type (Optional)
-    const validMimeTypes = ["image/jpeg", "image/png", "image/gif"];
-    if (!validMimeTypes.includes(req.file.mimetype)) {
-      return res.status(400).json({
-        message: "Invalid file type. Only JPEG, PNG, and GIF are allowed.",
-      });
-    }
-
-    // Get the image URL
-    const imagePath = getImageUrl(req.file.filename);
 
     // Create the review instance
     const review = new ReviewModel({
       name,
-      description,
-      company,
       position,
+      company,
       ratings,
-      image: imagePath,
+      description,
     });
 
     // Save the review to the database
@@ -46,8 +29,7 @@ const createReview = async (req, res) => {
   }
 };
 
-
-
+// Get all reviews
 const getAllReviews = async (req, res) => {
   try {
     const reviews = await ReviewModel.find();
@@ -56,109 +38,50 @@ const getAllReviews = async (req, res) => {
       return res.status(404).json({ message: "No Reviews Found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "All Reviews retrieved successfully", data: reviews });
+    res.status(200).json({ message: "All Reviews retrieved successfully", data: reviews });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: "Failed to fetch Reviews", details: error.message });
+    res.status(500).json({ error: "Failed to fetch Reviews", details: error.message });
   }
 };
 
-
-
+// Delete a review
 const deleteReview = async (req, res) => {
   try {
     const id = req.params.id;
 
     const review = await ReviewModel.findById(id);
     if (!review) {
-      res.status(404).json({ message: "Review does not Found" });
-    }
-
-    // Remove image if it exists
-    if (review.image) {
-      removeFile(review.image);  // No need to check for array since it's single image
+      return res.status(404).json({ message: "Review not found" });
     }
 
     await ReviewModel.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "Review Deleted successfully" });
+    res.status(200).json({ message: "Review deleted successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to delete Review", error: error.message });
+    res.status(500).json({ message: "Failed to delete review", error: error.message });
   }
 };
 
-
-const approveReview = async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    // Find the review by its ID
-    const review = await ReviewModel.findById(id);
-    if (!review) {
-      return res.status(404).json({ message: "Review not found" });
-    }
-
-    // Update the review's approval status
-    review.approved = true;
-
-    // Ensure the image is a single string (not an array)
-    if (Array.isArray(review.image)) {
-      // If image is an array, take the first element (single image case)
-      review.image = review.image[0];
-    }
-
-    // Save the updated review
-    await review.save();
-
-    // Add the image URL to the response if necessary
-    const reviewWithImageUrl = {
-      ...review.toObject(),
-      image: getImageUrl(review.image), // Convert the image path to the full URL
-    };
-
-    res.status(200).json({
-      message: "Review approved successfully",
-      review: reviewWithImageUrl,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "Failed to approve review",
-      error: error.message,
-    });
-  }
-};
-
-
-
+// Get all reviews (approved reviews are no longer needed)
 const getApprovedReviews = async (req, res) => {
   try {
-    const reviews = await ReviewModel.find({ approved: true }); 
+    const reviews = await ReviewModel.find();
     if (!reviews || reviews.length === 0) {
-      return res.status(404).json({ message: "No approved reviews found" });
+      return res.status(404).json({ message: "No reviews found" });
     }
 
-
-    res.status(200).json({ message: "Approved reviews retrieved successfully", data: reviews });
+    res.status(200).json({ message: "Reviews retrieved successfully", data: reviews });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Failed to fetch approved reviews", details: error.message });
+    res.status(500).json({ error: "Failed to fetch reviews", details: error.message });
   }
 };
-
-
-
-
 
 module.exports = {
   createReview,
   getAllReviews,
   deleteReview,
-  approveReview,
   getApprovedReviews,
 };

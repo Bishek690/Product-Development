@@ -1,7 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    country: "",
+    jobTitle: "",
+    jobDetails: "",
+  });
+
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Validate form fields
+  const validateForm = () => {
+    const { name, email, phone, jobDetails } = formData;
+    if (!name || !email || !phone || !jobDetails) {
+      return "Please fill out all required fields.";
+    }
+    return null;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear previous errors
+    setSuccessMessage(""); // Clear previous success messages
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5500/api/inquiry/contact",
+        formData
+      );
+      setSuccessMessage("Inquiry submitted successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        country: "",
+        jobTitle: "",
+        jobDetails: "",
+      });
+    } catch (err) {
+      const message =
+        err.response?.data?.error || "Failed to submit inquiry. Please try again.";
+      setError(message);
+    }
+  };
+
   return (
     <section className="bg-white py-10">
       <div className="container mx-auto px-4 lg:px-20 py-12 mt-6">
@@ -11,43 +77,42 @@ const ContactUs = () => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           {/* Left: Contact Form */}
-          <form className="space-y-6">
-            {[
-              "Name",
-              "Email",
-              "Phone",
-              "Company Name",
-              "Country",
-              "Job Title",
-            ].map((field, index) => (
-              <div key={index} className="relative">
-                <input
-                  type="text"
-                  id={field.toLowerCase().replace(" ", "_")}
-                  name={field.toLowerCase().replace(" ", "_")}
-                  className="peer block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor={field.toLowerCase().replace(" ", "_")}
-                  className="absolute left-3 top-2.5 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-blue-500"
-                >
-                  {field} *
-                </label>
-              </div>
-            ))}
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {["name", "email", "phone", "company", "country", "jobTitle"].map(
+              (field, index) => (
+                <div key={index} className="relative">
+                  <input
+                    type="text"
+                    id={field}
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleChange}
+                    className="peer block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor={field}
+                    className="absolute left-3 top-2.5 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-blue-500"
+                  >
+                    {field.charAt(0).toUpperCase() + field.slice(1).replace("_", " ")} *
+                  </label>
+                </div>
+              )
+            )}
 
             {/* Job Details Textbox */}
             <div className="relative">
               <textarea
-                id="job_details"
-                name="job_details"
+                id="jobDetails"
+                name="jobDetails"
                 rows="4"
+                value={formData.jobDetails}
+                onChange={handleChange}
                 className="peer block w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder=" "
               ></textarea>
               <label
-                htmlFor="job_details"
+                htmlFor="jobDetails"
                 className="absolute left-3 top-2.5 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-blue-500"
               >
                 Job Details *
@@ -60,6 +125,12 @@ const ContactUs = () => {
             >
               Send Message
             </button>
+
+            {/* Display success/error messages */}
+            {successMessage && (
+              <div className="mt-4 text-green-600">{successMessage}</div>
+            )}
+            {error && <div className="mt-4 text-red-600">{error}</div>}
           </form>
 
           {/* Right: Map and Contact Info */}

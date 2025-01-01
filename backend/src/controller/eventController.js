@@ -42,8 +42,8 @@ const createEvent = async (req, res) => {
       title,
       date,
       location,
-      eventDetails,
       images: imagePath,
+      eventDetails,
     });
     await newEvent.save();
 
@@ -59,7 +59,7 @@ const createEvent = async (req, res) => {
   }
 };
 
-const getEventByCategory = async (req, res) => {
+ const getEventByCategory = async (req, res) => {
   try {
     // Get the current local time
     const currentTimeLocal = new Date();
@@ -90,7 +90,7 @@ const getEventByCategory = async (req, res) => {
       error: error.message,
     });
   }
-};
+}; 
 
 
 // Get Single Event by ID

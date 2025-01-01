@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const pastSolutions = [
   {
     id: 1,
     industry: "E-Commerce",
-    challenge: "Improving website performance during high-traffic sales events.",
+    challenge:
+      "Improving website performance during high-traffic sales events.",
     solution:
       "Implemented scalable cloud infrastructure and optimized the website for faster load times. Introduced AI-powered recommendations to enhance user experience and drive sales.",
     results:
@@ -63,6 +65,7 @@ const PastSolutionsPage = () => {
     setRating(index + 1);
   };
 
+
   return (
     <div className="bg-gray-100 py-8 mt-6 px-4">
       {/* Header */}
@@ -98,12 +101,13 @@ const PastSolutionsPage = () => {
               >
                 Learn More →
               </button>
+              <Link to="/feedback">
               <button
                 className="text-green-500 font-medium hover:underline"
-                onClick={() => handleFeedbackClick(solution)}
               >
                 Feedback
               </button>
+              </Link>
             </div>
           </div>
         ))}
@@ -111,90 +115,27 @@ const PastSolutionsPage = () => {
 
       {/* Learn More Modal */}
       {/* Learn More Modal */}
-{showLearnMoreModal && (
-  <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-    <div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
-      <button
-        className="absolute top-4 right-4 text-red-600 hover:text-red-800 text-2xl font-bold"
-        onClick={() => setShowLearnMoreModal(false)}
-      >
-        &times;
-      </button>
-      <h3 className="text-xl font-bold mb-4">
-        {currentSolution?.industry}
-      </h3>
-      <p className="mb-2 text-gray-800">
-        <strong>Solution:</strong> {currentSolution?.solution}
-      </p>
-      <p className="text-gray-800">
-        <strong>Results:</strong>{" "}
-        <pre className="whitespace-pre-wrap">{currentSolution?.results}</pre>
-      </p>
-    </div>
-  </div>
-)}
-
-
-      {/* Feedback Form Modal */}
-      {showFeedbackForm && (
+      {showLearnMoreModal && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
+            <button
+              className="absolute top-4 right-4 text-red-600 hover:text-red-800 text-2xl font-bold"
+              onClick={() => setShowLearnMoreModal(false)}
+            >
+              &times;
+            </button>
             <h3 className="text-xl font-bold mb-4">
-              Feedback for {currentSolution?.industry}
+              {currentSolution?.industry}
             </h3>
-            <form onSubmit={handleFeedbackSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
-                  Name:
-                </label>
-                <input
-                  type="text"
-                  className="border border-gray-300 rounded-lg px-4 py-2 w-full"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
-                  Rating:
-                </label>
-                <div className="flex space-x-1">
-                  {[...Array(5)].map((_, index) => (
-                    <span
-                      key={index}
-                      className={`cursor-pointer text-2xl ${
-                        index < rating ? "text-yellow-500" : "text-gray-400"
-                      }`}
-                      onClick={() => handleStarClick(index)}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
-                  Feedback:
-                </label>
-                <textarea
-                  className="border border-gray-300 rounded-lg px-4 py-2 w-full"
-                  rows="4"
-                  required
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                className="ml-4 text-red-500"
-                onClick={() => setShowFeedbackForm(false)}
-              >
-                Cancel
-              </button>
-            </form>
+            <p className="mb-2 text-gray-800">
+              <strong>Solution:</strong> {currentSolution?.solution}
+            </p>
+            <p className="text-gray-800">
+              <strong>Results:</strong>{" "}
+              <pre className="whitespace-pre-wrap">
+                {currentSolution?.results}
+              </pre>
+            </p>
           </div>
         </div>
       )}

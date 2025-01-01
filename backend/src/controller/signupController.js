@@ -6,6 +6,11 @@ module.exports.signupController = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
     // Check if the admin with the same email already exists
     const existingAdmin = await adminModel.findOne({ email });
     if (existingAdmin) {
@@ -26,7 +31,7 @@ module.exports.signupController = async (req, res) => {
     const token = jwt.sign(
       { id: admin._id, email: admin.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" } 
+      { expiresIn: "1h" }
     );
 
     // Set the token as an HTTP-only cookie
@@ -43,6 +48,6 @@ module.exports.signupController = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    console.error(error.message);
+    console.error("Error:", error.message);
   }
 };
