@@ -81,12 +81,12 @@ const ViewEventPage = () => {
                   <p className="text-sm text-gray-600 mb-1">📅 {new Date(event.date).toLocaleDateString()}</p>
                   <p className="text-sm text-gray-600 mb-1">📍 {event.location}</p>
                   <p className="text-gray-700 mb-4">{event.eventDetails}</p>
-                {/*  <button
+                 <button
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition float-right"
                     onClick={() => handleDelete(event._id)}
                   >
                     Delete
-                  </button>*/}
+                  </button>
                 </motion.div>
               ))
             ) : (
@@ -116,12 +116,12 @@ const ViewEventPage = () => {
                   <p className="text-sm text-gray-600 mb-1">📅 {new Date(event.date).toLocaleDateString()}</p>
                   <p className="text-sm text-gray-600 mb-2">📍 {event.location}</p>
                   <p className="text-gray-700 mb-4">{event.eventDetails}</p>
-               {  /* <button
+                  <button
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition float-right"
                     onClick={() => handleDelete(event._id)}
                   >
                     Delete
-                  </button>*/}
+                  </button>
                 </motion.div>
               ))
             ) : (
