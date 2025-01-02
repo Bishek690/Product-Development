@@ -8,7 +8,13 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchInquiries = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/api/contact/get-contacts");
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get("http://localhost:5500/api/contact/get-contacts", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         if (response.data.data) {
           setInquiries(response.data.data);
         }

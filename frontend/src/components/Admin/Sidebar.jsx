@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
     navigate("admin/login");
   };
 

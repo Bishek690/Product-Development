@@ -17,8 +17,14 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/api/dashboard/dashboard-counts");
-        setCounts(response.data); // Set the counts in the state
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get("http://localhost:5500/api/dashboard/dashboard-counts", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        setCounts(response.data); 
       } catch (error) {
         console.error("Error fetching counts:", error);
       }

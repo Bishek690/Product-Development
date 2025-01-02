@@ -31,7 +31,13 @@ const ViewEventPage = () => {
   const handleDelete = async (eventId) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
-        await axios.delete(`http://localhost:5500/api/admin/delete-event/${eventId}`);
+        const token = localStorage.getItem('adminToken');
+        await axios.delete(`http://localhost:5500/api/admin/delete-event/${eventId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         alert("Event deleted successfully.");
         fetchEvents(); // Refresh the events list after deletion
       } catch (err) {

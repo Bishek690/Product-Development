@@ -20,13 +20,15 @@ function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
+        // credentials: 'include',
       });
 
-      const data = await response.json();
-      console.log("Response data:", data); 
+      
+      // console.log("Response data:", data); 
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('adminToken', data.token);
         navigate("/admin/dashboard"); 
       } else {
         console.error("Login failed:", data.message); 

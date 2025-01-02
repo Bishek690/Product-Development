@@ -1,11 +1,12 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+// components/ProtectedRoute.jsx
+import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) {
+  // Get token from localStorage
+  const token = localStorage.getItem('adminToken');
+  
+  // If there's no token, redirect to login
+  if (!token) {
     return <Navigate to="/admin/login" replace />;
   }
 

@@ -12,7 +12,13 @@ const FeedbackAndReviewsPage = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await axios.get("http://localhost:5500/api/review/get-reviews"); // Adjust the endpoint if needed
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get("http://localhost:5500/api/review/get-reviews", {
+        headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        },
+      }); 
       setReviews(response.data.data);
     } catch (err) {
       setError("Failed to load reviews");

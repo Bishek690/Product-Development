@@ -14,7 +14,13 @@ const BlogListPage = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get("http://localhost:5500/api/blog/get-blogs");
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get("http://localhost:5500/api/blog/get-blogs", {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       setBlogs(response.data.data);
     } catch (err) {
       setError("Failed to load blogs");
