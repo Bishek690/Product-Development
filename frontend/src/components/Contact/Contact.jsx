@@ -48,7 +48,7 @@ const ContactUs = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5500/api/inquiry/contact",
+        "http://localhost:5500/api/contact/contact",
         formData
       );
       setSuccessMessage("Inquiry submitted successfully!");
