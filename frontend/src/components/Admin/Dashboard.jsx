@@ -31,7 +31,7 @@ const Dashboard = () => {
     };
 
     fetchCounts();
-  }, []); // Empty array ensures the effect runs only once when the component mounts
+  }, []); 
 
   return (
     <div className="p-8">
